@@ -1,17 +1,8 @@
 from flask import Flask, render_template
+from application import app
 
-
-#This tells you where the app is being called from, in this case 'name'
-app=Flask(__name__)
-
-
-@app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html', title="Home Page")
-#using Jinja to render home file into html file
+#if the app is being run from the file rather than being imported, run the app 
+if __name__ == '__main__':
+ app.run(debug=True, host='0.0.0.0')
 
 #when this url is called, perform this function
-@app.route('/about')
-def about():
-    return render_template('about.html)', title ="About Page")
