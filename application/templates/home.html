@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body_content %}
-<p>this is a home page</p>
+<h1>home page</h1>
+
+<p>this is a home page</p><br>
 {% for post in posts %}
 	<div>
 		<h3>{{ post.title }}</h3>
@@ -11,4 +13,4 @@
 	</div>
 {% endfor %}
 	
-{% endblock %}
+{% endblock body_content%}
