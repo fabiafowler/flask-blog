@@ -1,23 +1,19 @@
 <html>
-	<head>
-		<title> {{ title }} </title>
-
-		{% if current_user.is_authenticated: %}
-	<a href="{{ url_for('logout')}}">Logout</a>
-	<a href="{{ url_for('home') }}">Home </a>
-	<a href="{{ url_for('about') }}">About Page</a>
-    <a href="{{ url_for('post') }}">Post Page</a>
-
-		{% else %}
-	<a href="{{ url_for('home') }}">Home </a>
-	<a href="{{ url_for('about') }}">About Page</a>
-	<a href="{{ url_for('register') }}">Register Page</a>
-	<a href="{{ url_for('login') }}">Login Page</a>
-		{% endif %}
-
-	</head>
 	<body>
-		{% block body_content %}
-		{% endblock body_content %}
+	<div class=navbar>
+		{% if current_user.is_authenticated %}
+			<a href="{{ url_for('home') }}">Home</a>
+			<a href="{{ url_for('about') }}">About</a>
+			<a href="{{ url_for('logout') }}">Logout</a>
+			<a href="{{ url_for('post') }}">Post</a>
+			<a href="{{ url_for('account') }}">Account</a>
+		{% else %}
+			<a href="{{ url_for('home') }}">Home</a>
+			<a href="{{ url_for('about') }}">About</a>
+			<a href="{{ url_for('login') }}">Login</a>
+			<a href="{{ url_for('register') }}">Register</a>
+		{% endif %}
+	</div>
+	{% block body_content %}{% endblock %}
 	</body>
 </html>

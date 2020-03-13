@@ -2,28 +2,40 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from application.models import Users
+from flask_login import current_user
 
+class PostForm(FlaskForm):
 
-class LoginForm(FlaskForm):
-    email = StringField('Email',
-        validators=[
-            DataRequired(),
-            Email()
-        ]
+    title = StringField('Title',
+            validators = [
+                DataRequired(),
+                Length(min=4, max=100)
+            ]
     )
 
-    password = PasswordField('Password',
-        validators=[
-            DataRequired()
-        ]
+    content = StringField('Content',
+            validators = [
+                DataRequired(),
+                Length(min=4, max=100)
+            ]
     )
 
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
-
-
+    submit = SubmitField('Post Content')
 
 class RegistrationForm(FlaskForm):
+    first_name = StringField('First Name',
+            validators = [
+                DataRequired(),
+                Length(min=4, max=30)
+            ]
+    )
+
+    last_name = StringField('Last Name',
+            validators = [
+                DataRequired(),
+                Length(min=4, max=30)
+            ]
+    )
     email = StringField('Email',
         validators = [
             DataRequired(),
@@ -50,7 +62,21 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Email already in use')
 
 
-class PostForm(FlaskForm):
+class LoginForm(FlaskForm):
+	email = StringField('Email',
+		validators=[
+			DataRequired(),
+			Email()
+		])
+	password = PasswordField('Password',
+		validators=[
+			DataRequired(),
+		])
+	remember = BooleanField('Remember Me')
+    
+	submit = SubmitField('Login')
+
+class UpdateAccountForm(FlaskForm):
     first_name = StringField('First Name',
             validators = [
                 DataRequired(),
@@ -64,20 +90,16 @@ class PostForm(FlaskForm):
                 Length(min=4, max=30)
             ]
     )
-
-    title = StringField('Title',
-            validators = [
-                DataRequired(),
-                Length(min=4, max=100)
-            ]
+    email = StringField('Email',
+        validators = [
+            DataRequired(),
+            Email()
+        ]
     )
+    submit = SubmitField('Update')
 
-    content = StringField('Content',
-            validators = [
-                DataRequired(),
-                Length(min=4, max=100)
-            ]
-    )
-
-    submit = SubmitField('Post Content')
-
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = Users.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Email already in use')
